@@ -1,0 +1,53 @@
+services:
+  - type: web
+    name: helify-paralysis-api
+    runtime: node
+    plan: starter
+    rootDir: mvp/backend
+    buildCommand: npm ci
+    startCommand: node src/server.js
+    healthCheckPath: /health
+    autoDeploy: true
+    disks:
+      - name: helify-data
+        mountPath: /var/data
+        sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DB_PATH
+        value: /var/data/helify_mvp.db
+      - key: CORS_ORIGIN
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: JWT_REFRESH_EXPIRES_DAYS
+        value: 30
+      - key: CONSENT_VERSION
+        value: 2026-03-v1
+      - key: OTP_TTL_MINUTES
+        value: 5
+      - key: OTP_MAX_ATTEMPTS
+        value: 5
+      - key: SMS_PROVIDER
+        value: twilio
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_VERIFY_SERVICE_SID
+        sync: false
+      - key: RATE_LIMIT_GLOBAL_WINDOW_MS
+        value: 60000
+      - key: RATE_LIMIT_GLOBAL_MAX
+        value: 120
+      - key: RATE_LIMIT_AUTH_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_AUTH_MAX
+        value: 12
+      - key: ENABLE_DEBUG_SNAPSHOT
+        value: false

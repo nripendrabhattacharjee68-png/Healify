@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Helify Paralysis MVP</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>Helify Paralysis MVP</h1>
+        <p class="subtitle">Post-stroke hemiparesis home rehab</p>
+      </div>
+      <div class="session-info">
+        <span id="active-user-label">Not signed in</span>
+        <button id="sign-out-btn" class="ghost">Sign out</button>
+      </div>
+    </header>
+
+    <nav class="tabbar" id="tabbar">
+      <button data-nav="login" class="active">Login</button>
+      <button data-nav="patient-home" hidden>Patient Home</button>
+      <button data-nav="checkin" hidden>Daily Check-in</button>
+      <button data-nav="session" hidden>Session</button>
+      <button data-nav="summary" hidden>Summary</button>
+      <button data-nav="progress" hidden>Progress</button>
+      <button data-nav="caregiver" hidden>Caregiver Mode</button>
+      <button data-nav="physio-dashboard" hidden>Physio Dashboard</button>
+      <button data-nav="physio-patient" hidden>Patient Detail</button>
+    </nav>
+
+    <main class="content">
+      <section class="screen active" id="screen-login">
+        <div class="card">
+          <h2>Role Login (OTP Demo)</h2>
+          <p>This MVP uses simulated OTP delivery. Use any phone number.</p>
+          <form id="login-form" class="stack">
+            <label>
+              Role
+              <select id="login-role" required>
+                <option value="patient">Patient</option>
+                <option value="caregiver">Caregiver</option>
+                <option value="physio">Physiotherapist</option>
+              </select>
+            </label>
+            <label>
+              Phone
+              <input id="login-phone" type="tel" placeholder="+91XXXXXXXXXX" required />
+            </label>
+            <div class="button-row">
+              <button type="submit">Send OTP</button>
+            </div>
+          </form>
+          <form id="otp-form" class="stack muted-block" hidden>
+            <label>
+              Enter OTP
+              <input id="otp-code" type="text" maxlength="6" placeholder="6 digit code" required />
+            </label>
+            <div class="button-row">
+              <button type="submit">Verify OTP</button>
+            </div>
+          </form>
+          <div id="otp-debug" class="note"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-onboarding">
+        <div class="card">
+          <h2>Patient Onboarding</h2>
+          <p>Complete this once before starting therapy sessions.</p>
+          <form id="onboarding-form" class="stack">
+            <label>
+              Patient full name
+              <input id="patient-name" type="text" required />
+            </label>
+            <label>
+              Affected side
+              <select id="affected-side" required>
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+              </select>
+            </label>
+            <label>
+              Stroke date
+              <input id="stroke-date" type="date" required />
+            </label>
+            <label>
+              Mobility level
+              <select id="mobility-level" required>
+                <option value="mild">Mild support</option>
+                <option value="moderate">Moderate support</option>
+              </select>
+            </label>
+            <label>
+              Caregiver phone
+              <input id="caregiver-phone" type="tel" placeholder="+91XXXXXXXXXX" required />
+            </label>
+            <label class="consent">
+              <input id="consent-checkbox" type="checkbox" required />
+              I consent to rehab tracking, report sharing with assigned physio, and acknowledge this is not emergency diagnosis.
+            </label>
+            <div class="button-row">
+              <button type="submit">Save onboarding</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-patient-home">
+        <div class="grid-two">
+          <div class="card">
+            <h2>Patient Home</h2>
+            <div id="patient-profile-summary" class="stack compact"></div>
+            <div class="button-row">
+              <button id="start-checkin-btn">Start daily check-in</button>
+              <button id="go-progress-btn" class="ghost">View 7 day progress</button>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Today</h3>
+            <div id="today-stats" class="stack compact"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-checkin">
+        <div class="card">
+          <h2>Pre-session Safety Check</h2>
+          <form id="checkin-form" class="stack">
+            <label>
+              Pain before session (0-10)
+              <input id="pain-pre" type="range" min="0" max="10" value="2" />
+              <span id="pain-pre-value">2</span>
+            </label>
+            <label>
+              Fatigue before session (0-10)
+              <input id="fatigue-pre" type="range" min="0" max="10" value="3" />
+              <span id="fatigue-pre-value">3</span>
+            </label>
+            <fieldset>
+              <legend>Red-flag screening (stop if any yes)</legend>
+              <label class="inline"><input type="checkbox" id="rf-chest-pain" /> Chest pain or breathing difficulty</label>
+              <label class="inline"><input type="checkbox" id="rf-uncontrolled-bp" /> Very high BP symptoms (severe headache/dizziness)</label>
+              <label class="inline"><input type="checkbox" id="rf-new-neuro" /> New sudden weakness/slurred speech</label>
+            </fieldset>
+            <div class="button-row">
+              <button type="submit">Submit check-in</button>
+              <button type="button" id="back-home-btn" class="ghost">Back</button>
+            </div>
+          </form>
+          <div id="checkin-status" class="note"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-session">
+        <div class="grid-two">
+          <div class="card">
+            <h2>Guided Session</h2>
+            <p id="session-affected-side"></p>
+            <div class="camera-wrap">
+              <video id="camera-video" autoplay playsinline muted></video>
+              <div id="camera-overlay">Camera idle</div>
+            </div>
+            <div class="button-row">
+              <button id="start-camera-btn">Start camera</button>
+              <button id="stop-camera-btn" class="ghost">Stop camera</button>
+              <button id="toggle-voice-btn" class="ghost">Voice cue: On</button>
+            </div>
+            <div class="callout" id="ai-coach-text">Coach: Keep posture upright, move slowly.</div>
+          </div>
+          <div class="card">
+            <h3>Exercise Tracker</h3>
+            <label>
+              Active exercise
+              <select id="exercise-select"></select>
+            </label>
+            <label class="inline"><input id="assisted-toggle" type="checkbox" /> Assisted rep (caregiver helping)</label>
+            <div class="button-row big-buttons" id="rep-controls">
+              <button data-rep="valid">+ Valid rep</button>
+              <button data-rep="invalid" class="ghost">+ Invalid rep</button>
+            </div>
+            <label>
+              ROM estimate (deg)
+              <input id="rom-input" type="number" min="0" max="120" value="35" />
+            </label>
+            <label>
+              Quality score (0-100)
+              <input id="quality-input" type="number" min="0" max="100" value="70" />
+            </label>
+            <div id="exercise-live-metrics" class="stack compact"></div>
+            <div class="button-row">
+              <button id="finish-session-btn">Finish session</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-summary">
+        <div class="card">
+          <h2>Session Summary</h2>
+          <div id="summary-content" class="stack"></div>
+          <div class="button-row">
+            <button id="summary-home-btn">Back to home</button>
+            <button id="summary-progress-btn" class="ghost">Open progress</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-progress">
+        <div class="card">
+          <h2>7 Day Progress</h2>
+          <div id="progress-kpis" class="grid-two"></div>
+          <div id="progress-bars" class="stack"></div>
+          <div class="button-row">
+            <button id="progress-home-btn">Back to home</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-caregiver">
+        <div class="card">
+          <h2>Caregiver Mode</h2>
+          <p>Large controls for assisted rehab sessions.</p>
+          <div class="caregiver-grid">
+            <button id="cg-start-session" class="large">Start patient check-in</button>
+            <button id="cg-valid" class="large">Record valid rep</button>
+            <button id="cg-invalid" class="large ghost">Record invalid rep</button>
+            <button id="cg-assist-toggle" class="large ghost">Assisted: Off</button>
+            <button id="cg-finish" class="large">Finish current session</button>
+          </div>
+          <div id="caregiver-status" class="note"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-physio-dashboard">
+        <div class="grid-two">
+          <div class="card">
+            <h2>Physio Alert Queue</h2>
+            <label>
+              Filter
+              <select id="physio-alert-filter">
+                <option value="open">Open alerts</option>
+                <option value="resolved">Resolved alerts</option>
+                <option value="all">All</option>
+              </select>
+            </label>
+            <div id="physio-alert-list" class="stack"></div>
+          </div>
+          <div class="card">
+            <h3>Patient Trends</h3>
+            <div id="physio-patient-cards" class="stack"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-physio-patient">
+        <div class="card">
+          <h2>Physio Patient Detail</h2>
+          <div id="physio-patient-detail" class="stack"></div>
+          <hr />
+          <h3>Add clinical note</h3>
+          <form id="physio-note-form" class="stack">
+            <label>
+              Note
+              <textarea id="physio-note-text" rows="3" required></textarea>
+            </label>
+            <label>
+              Next action
+              <input id="physio-next-action" type="text" placeholder="Adjust exercise dosage" required />
+            </label>
+            <label>
+              Follow-up date
+              <input id="physio-followup-date" type="date" required />
+            </label>
+            <div class="button-row">
+              <button type="submit">Save note</button>
+            </div>
+          </form>
+          <hr />
+          <h3>Update care plan</h3>
+          <form id="physio-plan-form" class="stack">
+            <label>
+              Target sessions/week
+              <input id="plan-target-sessions" type="number" min="1" max="14" value="5" required />
+            </label>
+            <label>
+              Knee extension reps target
+              <input id="plan-knee-reps" type="number" min="1" max="50" value="10" required />
+            </label>
+            <label>
+              Straight leg raise reps target
+              <input id="plan-slr-reps" type="number" min="1" max="50" value="8" required />
+            </label>
+            <label>
+              Ankle/heel slide reps target
+              <input id="plan-ankle-reps" type="number" min="1" max="50" value="10" required />
+            </label>
+            <div class="button-row">
+              <button type="submit">Save plan</button>
+              <button type="button" id="back-physio-dashboard" class="ghost">Back</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast-container"></div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+.DS_Store
+
+# Local runtime/tooling
+mvp/.tooling/
+
+# Node dependencies
+mvp/backend/node_modules/
+
+# Local env files
+mvp/backend/.env
+
+# Local SQLite data
+mvp/backend/data/*.db
+mvp/backend/data/*.db-*
