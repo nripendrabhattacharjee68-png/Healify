@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Helify MVP Frontend Blueprint</title>
+  <link rel="stylesheet" href="./mvp-blueprint.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">Helify Blueprint</p>
+      <h1>Paralysis MVP Frontend</h1>
+      <p class="subtitle">
+        Scope: post-stroke hemiparesis only, home rehab with caregiver support, physio oversight.
+      </p>
+      <div class="hero-links">
+        <a href="./index.html">Open Current App</a>
+        <a href="../docs/api.md">API Contract</a>
+      </div>
+    </header>
+
+    <section class="scope card">
+      <h2>MVP Scope Lock</h2>
+      <ul>
+        <li>Condition: medically stable post-stroke hemiparesis.</li>
+        <li>Exercises: seated knee extension, assisted straight leg raise, ankle dorsiflexion or heel slide.</li>
+        <li>Safety gate: mandatory pre-session check-in before camera.</li>
+        <li>Outcomes to track: adherence, valid reps, pain trend, alert turnaround.</li>
+      </ul>
+    </section>
+
+    <section class="flow card">
+      <h2>Screen Flow Blueprint</h2>
+      <nav class="step-tabs" id="step-tabs">
+        <button class="active" data-step="onboarding">1. Onboarding</button>
+        <button data-step="checkin">2. Safety Check</button>
+        <button data-step="session">3. Guided Session</button>
+        <button data-step="summary">4. Session Summary</button>
+        <button data-step="progress">5. Progress</button>
+        <button data-step="caregiver">6. Caregiver Mode</button>
+        <button data-step="alerts">7. Physio Alerts</button>
+        <button data-step="patient-detail">8. Physio Patient Detail</button>
+      </nav>
+
+      <div class="step-panels">
+        <article class="step-panel active" data-panel="onboarding">
+          <h3>Onboarding Screen</h3>
+          <p>Collect profile once and lock clinical context for all future sessions.</p>
+          <div class="mock-grid">
+            <label>Patient name<input type="text" placeholder="Patient full name" /></label>
+            <label>Affected side<select><option>Left</option><option>Right</option></select></label>
+            <label>Stroke date<input type="date" /></label>
+            <label>Mobility level<select><option>Mild</option><option>Moderate</option></select></label>
+            <label>Caregiver phone<input type="tel" placeholder="+91XXXXXXXXXX" /></label>
+            <label class="full inline"><input type="checkbox" /> Consent accepted</label>
+          </div>
+          <p class="meta">API: <code>POST /patients/onboarding</code></p>
+          <p class="meta">Acceptance: affected side is stored and reused in session logic.</p>
+        </article>
+
+        <article class="step-panel" data-panel="checkin">
+          <h3>Safety Check-In Screen</h3>
+          <p>Hard gate. Session cannot proceed if red flag is marked.</p>
+          <div class="mock-grid">
+            <label>Pain (0-10)<input type="range" min="0" max="10" value="2" /></label>
+            <label>Fatigue (0-10)<input type="range" min="0" max="10" value="3" /></label>
+            <label class="full inline"><input type="checkbox" /> Chest pain / breathing issue</label>
+            <label class="full inline"><input type="checkbox" /> Uncontrolled BP symptoms</label>
+            <label class="full inline"><input type="checkbox" /> New sudden neuro symptoms</label>
+          </div>
+          <p class="meta">API: <code>POST /sessions/{id}/checkin</code></p>
+          <p class="meta">Acceptance: red flag creates HIGH alert and blocks camera start.</p>
+        </article>
+
+        <article class="step-panel" data-panel="session">
+          <h3>Guided Session Screen</h3>
+          <p>Camera preview + exercise tracker + assisted mode + real-time cue text.</p>
+          <div class="session-wire">
+            <div class="camera-box">Camera view (pose landmarks overlay)</div>
+            <div class="tracker-box">
+              <label>Exercise<select><option>Seated knee extension</option></select></label>
+              <label class="inline"><input type="checkbox" /> Assisted rep</label>
+              <div class="button-row">
+                <button type="button">+ Valid Rep</button>
+                <button type="button" class="ghost">+ Invalid Rep</button>
+              </div>
+              <label>ROM estimate<input type="number" value="35" /></label>
+              <label>Quality score<input type="number" value="70" /></label>
+            </div>
+          </div>
+          <p class="meta">API: <code>POST /sessions/{id}/exercise-result</code></p>
+          <p class="meta">Acceptance: logs <code>valid_reps</code>, <code>avg_rom</code>, <code>assisted_reps</code>.</p>
+        </article>
+
+        <article class="step-panel" data-panel="summary">
+          <h3>Session Summary Screen</h3>
+          <p>Show clinical usefulness, not just UI stats.</p>
+          <ul>
+            <li>Pain pre/post delta and fatigue delta.</li>
+            <li>Total reps, valid reps, average ROM per exercise.</li>
+            <li>Any generated alerts with severity labels.</li>
+          </ul>
+          <p class="meta">API: <code>POST /sessions/{id}/finish</code></p>
+          <p class="meta">Acceptance: summary is persisted, not local-only.</p>
+        </article>
+
+        <article class="step-panel" data-panel="progress">
+          <h3>Progress Screen (7 Days)</h3>
+          <p>Compact trend view focused on adherence and safety.</p>
+          <ul>
+            <li>Completed sessions by day.</li>
+            <li>Valid rep rate trend.</li>
+            <li>Pain trend and adherence percentage.</li>
+          </ul>
+          <p class="meta">API: <code>GET /patients/{id}/progress?days=7</code></p>
+        </article>
+
+        <article class="step-panel" data-panel="caregiver">
+          <h3>Caregiver Mode Screen</h3>
+          <p>Large controls and minimal friction for assisted sessions.</p>
+          <ul>
+            <li>Large valid/invalid rep buttons.</li>
+            <li>Simple assisted toggle.</li>
+            <li>Voice cues in plain language.</li>
+          </ul>
+          <p class="meta">Acceptance: caregiver can only act on linked patient session.</p>
+        </article>
+
+        <article class="step-panel" data-panel="alerts">
+          <h3>Physio Alert Dashboard</h3>
+          <p>Start with alert queue before advanced AI features.</p>
+          <ul>
+            <li>Open alerts by severity and time.</li>
+            <li>Resolve action with short note.</li>
+            <li>Quick open patient detail.</li>
+          </ul>
+          <p class="meta">API: <code>GET /physio/alerts</code>, <code>POST /physio/alerts/{id}/resolve</code></p>
+        </article>
+
+        <article class="step-panel" data-panel="patient-detail">
+          <h3>Physio Patient Detail</h3>
+          <p>Single page for review and care-plan edits.</p>
+          <ul>
+            <li>Patient profile and current plan.</li>
+            <li>Latest alerts + physio notes.</li>
+            <li>7-day trends and plan update form.</li>
+          </ul>
+          <p class="meta">API: <code>GET /physio/patients/{id}</code>, <code>POST /physio/patients/{id}/plan</code></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="build-order card">
+      <h2>Implementation Order (Do Not Skip)</h2>
+      <ol>
+        <li>Auth + onboarding + consent + profile persistence.</li>
+        <li>Safety check-in gate and session lifecycle APIs.</li>
+        <li>Session summary and 7-day progress.</li>
+        <li>Physio alerts queue and resolve flow.</li>
+        <li>Caregiver mode and AI rep correction polish.</li>
+      </ol>
+    </section>
+
+    <section class="checklist card">
+      <h2>MVP Go-Live Checklist</h2>
+      <div class="checklist-items">
+        <label><input type="checkbox" /> Pre-session red flag blocks exercise.</label>
+        <label><input type="checkbox" /> Session data is saved to backend.</label>
+        <label><input type="checkbox" /> Refresh token rotation works.</label>
+        <label><input type="checkbox" /> Physio can resolve alerts and add notes.</label>
+        <label><input type="checkbox" /> 7-day progress API returns real data.</label>
+      </div>
+    </section>
+  </main>
+
+  <script src="./mvp-blueprint.js"></script>
+</body>
+</html>
