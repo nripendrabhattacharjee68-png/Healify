@@ -8,10 +8,10 @@ services:
     startCommand: node src/server.js
     healthCheckPath: /health
     autoDeploy: true
-    disks:
-      - name: helify-data
-        mountPath: /var/data
-        sizeGB: 1
+    disk:
+      name: helify-data
+      mountPath: /var/data
+      sizeGB: 1
     envVars:
       - key: NODE_ENV
         value: production
