@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Editor Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #090909;
+      --panel: #121212;
+      --text: #f5efe3;
+      --muted: #a8a299;
+      --accent: #ff4d00;
+      --border: #242424;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Syne", sans-serif;
+      background: radial-gradient(circle at 20% 10%, #1a1a1a 0%, var(--bg) 35%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    .wrap {
+      width: min(1180px, 92vw);
+      margin: 0 auto;
+      padding: 48px 0 72px;
+    }
+
+    .hero {
+      margin-bottom: 48px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(255, 77, 0, 0.08), transparent 45%);
+      padding: 38px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-family: "Bebas Neue", sans-serif;
+      letter-spacing: 1px;
+      font-size: clamp(44px, 9vw, 96px);
+      line-height: 0.9;
+      margin-bottom: 10px;
+    }
+
+    .sub {
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .section {
+      margin-top: 36px;
+    }
+
+    .section h2 {
+      font-family: "Bebas Neue", sans-serif;
+      letter-spacing: 2px;
+      font-size: clamp(30px, 5vw, 56px);
+      margin-bottom: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .grid.short {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+      overflow: hidden;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+
+    .thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+      background: #1f1f1f;
+    }
+
+    .ig-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .meta {
+      padding: 12px 12px 14px;
+    }
+
+    .tag {
+      font-size: 11px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .title {
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .contact {
+      margin-top: 40px;
+      border: 1px solid var(--border);
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .contact a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px) {
+      .grid.short {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow">Video Editor Portfolio</p>
+      <h1>CRAFTING STORIES<br />FRAME BY FRAME</h1>
+      <p class="sub">
+        Short-form and long-form edits built for watch time, emotion, and retention.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>SHORT FORMS</h2>
+      <div class="grid short">
+        <a class="card" href="https://youtube.com/shorts/8qBrp_sNe8I?si=yigB8e_o1gu0aYp8" target="_blank" rel="noopener noreferrer">
+          <img class="thumb" src="https://i.ytimg.com/vi/8qBrp_sNe8I/hqdefault.jpg" alt="Short Form 01" />
+          <div class="meta">
+            <p class="tag">YouTube Short</p>
+            <p class="title">Short Form 01</p>
+          </div>
+        </a>
+
+        <a class="card" href="https://www.instagram.com/reel/DBMHwk7KSKi/?igsh=MTdtOTUydGdvanJ1Ng==" target="_blank" rel="noopener noreferrer">
+          <div class="ig-placeholder">INSTAGRAM REEL</div>
+          <div class="meta">
+            <p class="tag">Instagram Reel</p>
+            <p class="title">Reel 01</p>
+          </div>
+        </a>
+
+        <a class="card" href="https://www.instagram.com/reel/DAs8ekwBQg-/?hl=en" target="_blank" rel="noopener noreferrer">
+          <div class="ig-placeholder">INSTAGRAM REEL</div>
+          <div class="meta">
+            <p class="tag">Instagram Reel</p>
+            <p class="title">Reel 02</p>
+          </div>
+        </a>
+
+        <a class="card" href="https://www.instagram.com/reel/DA8ctx6BiB9/" target="_blank" rel="noopener noreferrer">
+          <div class="ig-placeholder">INSTAGRAM REEL</div>
+          <div class="meta">
+            <p class="tag">Instagram Reel</p>
+            <p class="title">Reel 03</p>
+          </div>
+        </a>
+
+        <a class="card" href="https://www.instagram.com/reel/DGsfeF0IqG5/" target="_blank" rel="noopener noreferrer">
+          <div class="ig-placeholder">INSTAGRAM REEL</div>
+          <div class="meta">
+            <p class="tag">Instagram Reel</p>
+            <p class="title">Reel 04</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>LONG FORMS</h2>
+      <div class="grid">
+        <a class="card" href="https://youtu.be/kWfXCmGqtFA?si=Tr579FAnj4UyXSOV" target="_blank" rel="noopener noreferrer">
+          <img class="thumb" src="https://i.ytimg.com/vi/kWfXCmGqtFA/hqdefault.jpg" alt="Long Form 01" />
+          <div class="meta">
+            <p class="tag">YouTube</p>
+            <p class="title">Long Form 01</p>
+          </div>
+        </a>
+
+        <a class="card" href="https://youtu.be/t0J8xOwcLKE?si=HeBZQY_2uErRLbsH" target="_blank" rel="noopener noreferrer">
+          <img class="thumb" src="https://i.ytimg.com/vi/t0J8xOwcLKE/hqdefault.jpg" alt="Long Form 02" />
+          <div class="meta">
+            <p class="tag">YouTube</p>
+            <p class="title">Long Form 02</p>
+          </div>
+        </a>
+
+        <a class="card" href="https://youtu.be/SZ49mcRL3ak?si=Q9XefIbTshF-a6q1" target="_blank" rel="noopener noreferrer">
+          <img class="thumb" src="https://i.ytimg.com/vi/SZ49mcRL3ak/hqdefault.jpg" alt="Long Form 03" />
+          <div class="meta">
+            <p class="tag">YouTube</p>
+            <p class="title">Long Form 03</p>
+          </div>
+        </a>
+
+        <a class="card" href="https://youtu.be/bweYgPUkdvg?si=DxdOjHJetBx4gS8W" target="_blank" rel="noopener noreferrer">
+          <img class="thumb" src="https://i.ytimg.com/vi/bweYgPUkdvg/hqdefault.jpg" alt="Long Form 04" />
+          <div class="meta">
+            <p class="tag">YouTube</p>
+            <p class="title">Long Form 04</p>
+          </div>
+        </a>
+
+        <a class="card" href="https://youtu.be/Ro9i0OrcDgI?si=x_vIV9B9qDxAH5jg" target="_blank" rel="noopener noreferrer">
+          <img class="thumb" src="https://i.ytimg.com/vi/Ro9i0OrcDgI/hqdefault.jpg" alt="Long Form 05" />
+          <div class="meta">
+            <p class="tag">YouTube</p>
+            <p class="title">Long Form 05</p>
+          </div>
+        </a>
+
+        <a class="card" href="https://youtu.be/Lv8BD8xefJs?si=REpbQBpLa_Tt4EU6" target="_blank" rel="noopener noreferrer">
+          <img class="thumb" src="https://i.ytimg.com/vi/Lv8BD8xefJs/hqdefault.jpg" alt="Long Form 06" />
+          <div class="meta">
+            <p class="tag">YouTube</p>
+            <p class="title">Long Form 06</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="contact">
+      <p>For collaborations: <a href="mailto:nripendrabhattacharjee68@gmail.com">nripendrabhattacharjee68@gmail.com</a></p>
+      <p>© 2026 Video Editor Portfolio</p>
+    </section>
+  </main>
+</body>
+</html>
